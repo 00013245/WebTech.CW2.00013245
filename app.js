@@ -1,8 +1,49 @@
+let deleteBtns = document.querySelectorAll('.delete-btn')
+let form = document.getElementById('update-form');
 const express = require('express')
 const app = express()
-
 const fs = require('fs')
 
+deleteBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+    	fetch('/notes/delete', {
+    		method: 'DELETE',
+    		headers: {
+    			'Content-Type': 'notes/json'
+    		},
+    		body: JSON.stringify({ id: e.target.dataset.id })
+    	})
+    	.then(res => res.json())
+    	.then(data => {
+    		if (data.deleted) {
+    			e.target.parentElement.parentElement.remove()
+    		}
+    	})
+    })
+})
+updateBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+    	window.location = `/notes/update/${e.target.dataset.id}`
+    })
+})
+
+form.addEventListener('submit', e => {
+    e.preventDefault()
+
+    let formData = new FormData(form)
+
+    fetch(`/notes/update/${e.target.dataset.id}`, {
+    	method: 'PUT',
+    	headers: {
+    		'Content-Type': 'notes/json'
+    	},
+    	body: JSON.stringify({ data: Object.fromEntries(formData)})
+    })
+    .then(res => res.json())
+    .then(data => {
+    	console.log(data)
+    })
+})
 
 app.set('view engine','pug')
 
@@ -44,7 +85,15 @@ app.post('/create', (req,res)=>{
     
 })
 
+app.get('/api/v1/notes', (req, res)=> {
+    fs.readFile('./data/notes.json',(err, data) => {
+        if (err) throw err
 
+        const notes = JSON.parse(data)
+    
+        res.json(notes)
+    })
+})
 
 
 
@@ -55,26 +104,24 @@ app.get('/notes', (req,res)=>{
 
         const notes = JSON.parse(data)
     
-        res.render('notes', {notes: notes})
+        res.render('notes', { notes: notes })
     })
 })
 
 app.get('/notes/:id',(req,res)=> {
     const id = req.params.id
-
+    
     fs.readFile('./data/notes.json',(err, data)=> {
         if (err) throw err
 
         const notes = JSON.parse(data)
-
         const note = notes.filter(note => note.id == id)[0]
     
-        res.render('detail', {note: note})
+        res.render('detail', { note: note})
     })
     
    
 })
-
 
 
 

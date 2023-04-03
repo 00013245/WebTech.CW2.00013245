@@ -1,6 +1,6 @@
 # Notes web application
 ### This application was developed based on tutorials from intranet by best teacher Bunyod Khoshimkhujaev!
-### Application allows users to create, delete, and change notes.
+### Application allows users to create and delete notes.
 
 ### ʕ ᵔᴥᵔ ʔ(◕‿◕)ʕ ᵔᴥᵔ ʔ(◕‿◕)ʕ ᵔᴥᵔ ʔ(◕‿◕)ʕ ᵔᴥᵔ ʔ(◕‿◕)ʕ ᵔᴥᵔ ʔ
 
@@ -21,6 +21,8 @@ npm install
 ```bash
 node app
 ```
+### Limitations
+- due to some magic and technical challanges function of web application, sometimes do not working properly such as ('delete' and 'create note' buttons), however all codes were based on seminars and included in project.
 
 ### Web application dependencies
 - express.js
